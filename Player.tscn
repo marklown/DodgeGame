@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://playerGrey_walk1.png" type="Texture" id=2]
@@ -26,20 +26,20 @@ custom_solver_bias = 0.0
 radius = 25.575
 height = 9.25
 
-[node name="Player" type="Area2D"]
+[sub_resource type="CircleShape2D" id=3]
+
+custom_solver_bias = 0.0
+radius = 26.5506
+
+[node name="Player" type="KinematicBody2D" index="0"]
 
 position = Vector2( 516, 288.25 )
-input_pickable = true
-gravity_vec = Vector2( 0, 1 )
-gravity = 98.0
-linear_damp = 0.1
-angular_damp = 1.0
-audio_bus_override = false
-audio_bus_name = "Master"
+input_pickable = false
+collision_layer = 1
+collision_mask = 1
+collision/safe_margin = 0.08
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_group_": true
-}
+_sections_unfolded = [ "Collision", "collision" ]
 speed = 400
 player_number = null
 
@@ -54,6 +54,24 @@ _sections_unfolded = [ "Transform" ]
 
 shape = SubResource( 2 )
 
-[connection signal="body_entered" from="." to="." method="_on_Player_body_entered"]
+[node name="Area2D" type="Area2D" parent="." index="2"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+collision_layer = 4
+collision_mask = 2
+audio_bus_override = false
+audio_bus_name = "Master"
+_sections_unfolded = [ "Collision" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="0"]
+
+position = Vector2( -0.125, -6.875 )
+shape = SubResource( 3 )
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 
 

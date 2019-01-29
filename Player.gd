@@ -1,4 +1,4 @@
-extends Area2D
+extends KinematicBody2D
 
 export (int) var speed
 export (int) var player_number
@@ -10,11 +10,14 @@ var down = "player1_down"
 var left = "player1_left"
 var right = "player1_right"
 
+var velocity = Vector2()
+
 signal hit
 
 func start(pos):
 	position = pos
 	show()
+	$Area2D/CollisionShape2D.disabled = false
 	$CollisionShape2D.disabled = false
 	
 	if player_number == 1:
@@ -31,9 +34,9 @@ func start(pos):
 func _ready():
 	screensize = get_viewport_rect().size
 	hide()
-
-func _process(delta):
-	var velocity = Vector2()
+	
+func get_input():
+	velocity = Vector2()
 	if Input.is_action_pressed(right):
 		velocity.x += 1
 	if Input.is_action_pressed(left):
@@ -42,16 +45,24 @@ func _process(delta):
 		velocity.y += 1
 	if Input.is_action_pressed(up):
 		velocity.y -= 1
+	velocity = velocity.normalized() * speed
+		
+		
+func _physics_process(delta):
+	get_input()
+	var collision = move_and_collide(velocity * delta)
+	if collision:
+		var body_hit = collision.collider
+		#print(body_hit.name)
+		velocity = velocity.bounce(collision.normal)
+	
+
+func _process(delta):	
 	if velocity.length() > 0:
-		velocity = velocity.normalized() * speed
 		$AnimatedSprite.play()
 	else:
 		$AnimatedSprite.stop()
 		
-	position += velocity * delta
-	position.x = clamp(position.x, 0, screensize.x)
-	position.y = clamp(position.y, 0, screensize.y)
-	
 	if velocity.x != 0:
 		$AnimatedSprite.animation = "Right"
 		$AnimatedSprite.flip_v = false
@@ -62,7 +73,8 @@ func _process(delta):
 		
 
 
-func _on_Player_body_entered(body):
+func _on_Area2D_body_entered(body):
 	hide()
 	emit_signal("hit")
+	$Area2D/CollisionShape2D.disabled = true
 	$CollisionShape2D.disabled = true

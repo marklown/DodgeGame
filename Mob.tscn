@@ -37,8 +37,8 @@ height = 16.0
 
 position = Vector2( 287, 176.5 )
 input_pickable = false
-collision_layer = 1
-collision_mask = 0
+collision_layer = 2
+collision_mask = 4
 mode = 0
 mass = 1.0
 friction = 1.0
@@ -67,7 +67,6 @@ max_speed = 250
 scale = Vector2( 0.75, 0.75 )
 frames = SubResource( 1 )
 animation = "fly"
-frame = 1
 playing = true
 _sections_unfolded = [ "Material", "Pause", "Transform", "Visibility", "Z Index" ]
 
@@ -80,6 +79,8 @@ _sections_unfolded = [ "Material", "Pause", "Transform", "Visibility", "Z Index"
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="." index="2"]
 
 rect = Rect2( -10, -10, 20, 20 )
+
+[connection signal="body_entered" from="." to="." method="_on_Mob_body_entered"]
 
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
 
