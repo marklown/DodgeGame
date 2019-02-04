@@ -12,7 +12,7 @@ _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0.100006, -0.700001, 0, 0, 0, 0, 1023.1, 1, 0, 0, 0, 0, 1024.8, 601.4, 0, 0, 0, 0, 0, 601.3, 0, 0, 0, 0, 0.100006, -0.700001 )
 }
 
-[node name="Main" type="Node"]
+[node name="Main" type="Node" index="0"]
 
 script = ExtResource( 1 )
 Mob = ExtResource( 2 )
@@ -92,7 +92,7 @@ curve = SubResource( 1 )
 [node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath" index="0"]
 
 position = Vector2( 0.100006, -0.700001 )
-rotation = 0.0016618
+rotation = 0.00166177
 offset = 0.0
 h_offset = 0.0
 v_offset = 0.0
